@@ -2,7 +2,6 @@ package net.alterapp.miniproject3.controller;
 
 import net.alterapp.miniproject3.domain.Book;
 import net.alterapp.miniproject3.service.BookService;
-import net.alterapp.miniproject3.service.LibraryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

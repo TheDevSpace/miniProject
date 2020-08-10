@@ -39,5 +39,9 @@ public class OrderController extends BaseController {
         return buildResponse(orderService.update(id), HttpStatus.OK);
     }
 
+    @PutMapping("/updateDate")
+    public ResponseEntity<?> updatePassingDate(@RequestParam Long id) {
+        return buildResponse(orderService.updatePassedDate(id), HttpStatus.OK);
+    }
 
 }

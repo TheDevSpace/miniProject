@@ -1,7 +1,9 @@
 package net.alterapp.miniproject3.service;
 
 import net.alterapp.miniproject3.domain.Book;
+import net.alterapp.miniproject3.domain.Customer;
 import net.alterapp.miniproject3.domain.Library;
+import net.alterapp.miniproject3.domain.Order;
 import net.alterapp.miniproject3.repository.BookRepo;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ import java.util.List;
 public class BookService {
     private final BookRepo bookRepo;
     private final LibraryService libraryService;
+    private final OrderService orderService;
 
-    public BookService(BookRepo bookRepo, LibraryService libraryService) {
+    public BookService(BookRepo bookRepo, LibraryService libraryService, OrderService orderService) {
         this.bookRepo = bookRepo;
         this.libraryService = libraryService;
+        this.orderService = orderService;
     }
 
     public List<Book> findAll() {
@@ -67,5 +71,4 @@ public class BookService {
         }
         return books;
     }
-
 }

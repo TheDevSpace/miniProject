@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +41,23 @@ public class OrderService {
         return orderRepo.findByIdAndDeletedAtIsNull(id);
     }
 
+    public List<Order> findAllByOrder(Long id) {
+        List<Order> orders = new ArrayList<>();
+        Book book = bookService.findById(id);
+        if (book != null) {
+            orders = orderRepo.findAllByBookId(id);
+        } else {
+            System.out.println("There is no Book with id = " + id);
+        }
+        return orders;
+    }
+
     public Order add(Order order) throws ServiceException {
         Library library = libraryService.findById(order.getLibrary().getId());
         List<Book> books = bookService.findAllByLibrary(library.getId());
         Customer customer = customerService.findById(order.getCustomer().getId());
         DateTime dateTime = new DateTime();
-        order.setPassedDate(dateTime.plusMonths(1).toDate());
+        order.setPassingDate(dateTime.plusMonths(1).toDate());
         order.setLibrary(library);
         order.setCustomer(customer);
         boolean isEquals = false;
@@ -55,8 +67,25 @@ public class OrderService {
                 order.setBook(book);
             }
         }
+
+        List<Order> orders = orderRepo.findAllByBookId(order.getBook().getId());
+        boolean isNotContainsBook = true;
+        for(Order order1 : orders ) {
+            if(order1.getPassedDate() == null) {
+                isNotContainsBook = false;
+            }
+        }
+
         if (isEquals) {
-            return orderRepo.save(order);
+            if(isNotContainsBook){
+                return orderRepo.save(order);
+            }else {
+                throw ServiceException.builder()
+                        .errorCode(ErrorCode.SYSTEM_ERROR)
+                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .message("Book is not available")
+                        .build();
+            }
         } else {
             throw ServiceException.builder()
                     .errorCode(ErrorCode.SYSTEM_ERROR)
@@ -73,6 +102,14 @@ public class OrderService {
         return "update";
     }
 
+    public Order updatePassedDate(Long id) {
+        Order order= orderRepo.findByIdAndDeletedAtIsNull(id);
+        if(order.getPassedDate() == null) {
+            order.setPassedDate(new Date());
+            orderRepo.save(order);
+        }
+        return order;
+    }
 
 }
 

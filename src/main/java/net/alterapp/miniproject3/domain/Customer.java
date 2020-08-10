@@ -26,4 +26,14 @@ public class Customer extends AuditModel {
 
     @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name= "phone")
+    private Integer phone;
+
+    @Column(name = "address")
+    private String address;
+
 }
