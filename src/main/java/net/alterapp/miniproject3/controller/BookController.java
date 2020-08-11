@@ -39,6 +39,11 @@ public class BookController extends BaseController {
         bookService.delete(id);
         return buildResponse("Deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/av")
+    public ResponseEntity<?> listAvailableBooks() {
+        return buildResponse(bookService.getAvailableBooks(), HttpStatus.OK);
+    }
 }
 
 

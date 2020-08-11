@@ -30,6 +30,9 @@ public class Book extends AuditModel{
     @Column(name = "pagesAmount")
     private int pagesAmount = 0;
 
+    @Column(name = "availableBooks")
+    private  Integer availableBook=1;
+
     @ManyToOne
     private Library library;
 }

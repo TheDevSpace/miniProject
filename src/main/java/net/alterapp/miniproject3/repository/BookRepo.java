@@ -11,4 +11,5 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     List<Book> findAllByDeletedAtIsNull();
     Book findByIdAndDeletedAtIsNull(Long id);
     List<Book> findAllByLibraryId(Long id);
+    List<Book> findAllByAvailableBook(Integer status);
 }

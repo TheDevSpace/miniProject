@@ -10,12 +10,8 @@ import net.alterapp.miniproject3.repository.OrderRepo;
 import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
-import javax.xml.crypto.Data;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +61,7 @@ public class OrderService {
             if (order.getBook().getId().equals(book.getId())) {
                 isEquals = true;
                 order.setBook(book);
+                book.setAvailableBook(0);
             }
         }
 
@@ -104,12 +101,21 @@ public class OrderService {
 
     public Order updatePassedDate(Long id) {
         Order order= orderRepo.findByIdAndDeletedAtIsNull(id);
+
+        Library library = libraryService.findById(order.getLibrary().getId());
+        List<Book> books = bookService.findAllByLibrary(library.getId());
+        Customer customer = customerService.findById(order.getCustomer().getId());
+
         if(order.getPassedDate() == null) {
             order.setPassedDate(new Date());
             orderRepo.save(order);
+            for (Book book : books) {
+                    bookService.upd(book.getId());
+                }
         }
         return order;
     }
 
 }
+
 

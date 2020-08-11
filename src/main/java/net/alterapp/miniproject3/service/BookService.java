@@ -1,10 +1,10 @@
 package net.alterapp.miniproject3.service;
 
 import net.alterapp.miniproject3.domain.Book;
-import net.alterapp.miniproject3.domain.Customer;
 import net.alterapp.miniproject3.domain.Library;
 import net.alterapp.miniproject3.domain.Order;
 import net.alterapp.miniproject3.repository.BookRepo;
+import net.alterapp.miniproject3.repository.OrderRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import java.util.List;
 public class BookService {
     private final BookRepo bookRepo;
     private final LibraryService libraryService;
-    private final OrderService orderService;
 
-    public BookService(BookRepo bookRepo, LibraryService libraryService, OrderService orderService) {
+
+    public BookService(BookRepo bookRepo, LibraryService libraryService) {
         this.bookRepo = bookRepo;
         this.libraryService = libraryService;
-        this.orderService = orderService;
+
     }
 
     public List<Book> findAll() {
@@ -52,6 +52,13 @@ public class BookService {
         return "update";
     }
 
+    public String upd(Long id) {
+        Book book = bookRepo.findByIdAndDeletedAtIsNull(id);
+        book.setAvailableBook(1);
+        bookRepo.save(book);
+        return "update";
+    }
+
     public void delete(Long id) {
         Book book = bookRepo.findByIdAndDeletedAtIsNull(id);
         if (book != null) {
@@ -71,4 +78,21 @@ public class BookService {
         }
         return books;
     }
+
+
+//    public List<Book> getAvailableBooks(Long id) {
+////        List<Book> books = bookRepo.findAllById(orderRepo.findAllByBookId());
+////        Order order = orderRepo.findAllByBookId(book.)
+//        List<Book> books = new ArrayList<>();
+//        Library library = libraryService.findById(id);
+//        Order order = orderRepo.findAllByBookId();
+//
+//    }
+
+    public List<Book> getAvailableBooks(){
+        List<Book> availableBooks = bookRepo.findAllByAvailableBook(1);
+        return availableBooks;
+    }
+
+
 }
