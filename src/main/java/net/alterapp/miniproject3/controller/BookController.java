@@ -1,11 +1,15 @@
 package net.alterapp.miniproject3.controller;
 
+import lombok.AllArgsConstructor;
 import net.alterapp.miniproject3.domain.Book;
 import net.alterapp.miniproject3.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+
+@Service
 @RestController
 @RequestMapping("/api/book")
 public class BookController extends BaseController {

@@ -1,11 +1,14 @@
 package net.alterapp.miniproject3.controller;
 
 import net.alterapp.miniproject3.domain.Library;
+import net.alterapp.miniproject3.domain.requests.LibraryRequest;
 import net.alterapp.miniproject3.service.LibraryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+@Service
 @RestController
 @RequestMapping("/api/library")
 public class LibraryController extends BaseController{
@@ -23,6 +26,11 @@ public class LibraryController extends BaseController{
     @GetMapping("/id")
     public ResponseEntity<?> getById(@RequestParam Long id) {
         return buildResponse(libraryService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/id/response")
+    public ResponseEntity<?> getByIdResponse(@RequestParam Long id) {
+        return buildResponse(libraryService.findByIdResponse(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add/v1")
@@ -43,6 +51,11 @@ public class LibraryController extends BaseController{
         return buildResponse(libraryService.add(library), HttpStatus.OK);
     }
 
+    @PostMapping("/add/v3")
+    public ResponseEntity<?> addReq(@RequestBody LibraryRequest libraryRequest) {
+        return buildResponse(libraryService.addReq(libraryRequest), HttpStatus.OK);
+    }
+
     @PutMapping(value = "/update")
     public ResponseEntity<?> updateLibrary(@RequestParam Long id,
                                            @RequestParam String name,
@@ -50,9 +63,9 @@ public class LibraryController extends BaseController{
         return buildResponse(libraryService.update(id, name, city), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-        libraryService.delete(id);
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<?> delete(@RequestParam(value = "city") String city) {
+        libraryService.delete(city);
         return buildResponse("Deleted", HttpStatus.OK);
     }
 }

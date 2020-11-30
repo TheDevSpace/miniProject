@@ -10,4 +10,6 @@ import java.util.List;
 public interface LibraryRepo extends JpaRepository<Library, Long>{
     List<Library> findAllByDeletedAtIsNull();
     Library findByIdAndDeletedAtIsNull(Long id);
+    List<Library> findAllByCityAndDeletedAtIsNull(String city);
+
 }

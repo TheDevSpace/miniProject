@@ -70,8 +70,7 @@ public class BookService {
 
     public List<Book> findAllByLibrary(Long id) {
         List<Book> books = new ArrayList<>();
-        Library library = libraryService.findById(id);
-        if (library != null) {
+        if (id != null) {
             books = bookRepo.findAllByLibraryId(id);
         } else {
             System.out.println("There is no Library with id = " + id);
@@ -80,14 +79,6 @@ public class BookService {
     }
 
 
-//    public List<Book> getAvailableBooks(Long id) {
-////        List<Book> books = bookRepo.findAllById(orderRepo.findAllByBookId());
-////        Order order = orderRepo.findAllByBookId(book.)
-//        List<Book> books = new ArrayList<>();
-//        Library library = libraryService.findById(id);
-//        Order order = orderRepo.findAllByBookId();
-//
-//    }
 
     public List<Book> getAvailableBooks(){
         List<Book> availableBooks = bookRepo.findAllByAvailableBook(1);

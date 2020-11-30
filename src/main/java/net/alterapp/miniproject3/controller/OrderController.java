@@ -6,10 +6,12 @@ import net.alterapp.miniproject3.exception.ServiceException;
 import net.alterapp.miniproject3.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+@Service
 @RestController
 @RequestMapping("/api/order")
 public class OrderController extends BaseController {
