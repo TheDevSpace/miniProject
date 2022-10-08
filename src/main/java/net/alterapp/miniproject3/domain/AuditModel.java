@@ -1,5 +1,8 @@
 package net.alterapp.miniproject3.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -9,41 +12,32 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@JsonIgnoreProperties(
+        value = {"version", "createdAt", "updatedAt"},
+        allowGetters = true
+)
 public abstract class AuditModel implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "seq")
-    @Column(updatable = false, nullable = false)
-    private Long id;
+    @JsonIgnore
+    private int version = 0;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
+    @JsonIgnore
     private Date createdAt = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
+    @JsonIgnore
     private Date updatedAt = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "deleted_at")
+    @Column(name = "deleted_at", nullable = true)
+    @JsonIgnore
     private Date deletedAt;
-
-
-    @PrePersist
-    private void prePersist() {
-        if (this.createdAt == null) {
-            this.createdAt = new Date();
-        }
-        this.updatedAt = new Date();
-    }
-
-    @PreUpdate
-    private void preUpdate() {
-        this.updatedAt = new Date();
-    }
 }
